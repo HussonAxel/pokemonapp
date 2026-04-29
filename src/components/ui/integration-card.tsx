@@ -1,14 +1,8 @@
-import { cn } from '#/lib/utils';
-import {
-  Check,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-} from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
-import React, { useEffect, useRef, useState } from 'react';
-import { IoClose } from 'react-icons/io5';
+import { cn } from "#/lib/utils";
+import { Check, ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import React, { useEffect, useRef, useState } from "react";
+import { IoClose } from "react-icons/io5";
 
 /* ---------- Types ---------- */
 export interface IntegrationItem {
@@ -38,19 +32,16 @@ const FilterButton: React.FC<{
   <button
     onClick={onClick}
     className={cn(
-      'relative flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[11px] transition active:scale-95',
+      "relative flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[11px] transition active:scale-95",
       active
-        ? 'border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-[#3a3a3a] dark:bg-[#1a1a1a] dark:text-white'
-        : 'border-zinc-200 bg-zinc-100/50 text-zinc-500 hover:text-zinc-900 dark:border-[#2a2a2a] dark:bg-[#141414] dark:text-[#a3a3a3] dark:hover:text-white',
+        ? "border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-[#3a3a3a] dark:bg-[#1a1a1a] dark:text-white"
+        : "border-zinc-200 bg-zinc-100/50 text-zinc-500 hover:text-zinc-900 dark:border-[#2a2a2a] dark:bg-[#141414] dark:text-[#a3a3a3] dark:hover:text-white",
     )}
   >
     {selected || label}
     <ChevronDown
       size={12}
-      className={cn(
-        'transition-transform duration-300',
-        active ? 'rotate-180' : '',
-      )}
+      className={cn("transition-transform duration-300", active ? "rotate-180" : "")}
     />
   </button>
 );
@@ -65,7 +56,13 @@ const IntegrationCard: React.FC<{ item: IntegrationItem }> = ({ item }) => {
     >
       {/* Icon */}
       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 dark:border-[#2a2a2a] dark:bg-[#0f0f0f]">
-        <img src={"https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0968/Normal.png"} alt={item.name} className='rounded-md'/>
+        <img
+          src={
+            "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0968/Normal.png"
+          }
+          alt={item.name}
+          className="rounded-md"
+        />
       </div>
 
       {/* Content */}
@@ -113,16 +110,11 @@ const IntegrationCard: React.FC<{ item: IntegrationItem }> = ({ item }) => {
 };
 
 /* ---------- Main ---------- */
-export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
-  items,
-  title,
-}) => {
-  const [activePopover, setActivePopover] = useState<
-    'type' | 'useCase' | 'more' | null
-  >(null);
-  const [selectedType, setSelectedType] = useState('All types');
-  const [selectedUseCase, setSelectedUseCase] = useState('All use cases');
-  const [searchQuery, setSearchQuery] = useState('');
+export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({ items, title }) => {
+  const [activePopover, setActivePopover] = useState<"type" | "useCase" | "more" | null>(null);
+  const [selectedType, setSelectedType] = useState("All types");
+  const [selectedUseCase, setSelectedUseCase] = useState("All use cases");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
@@ -130,15 +122,12 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(event.target as Node)
-      ) {
+      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
         setActivePopover(null);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Filter Logic
@@ -146,11 +135,9 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
     const matchesSearch =
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType =
-      selectedType === 'All types' || item.tags.includes(selectedType);
+    const matchesType = selectedType === "All types" || item.tags.includes(selectedType);
     const matchesUseCase =
-      selectedUseCase === 'All use cases' ||
-      item.entities.includes(selectedUseCase.toUpperCase());
+      selectedUseCase === "All use cases" || item.entities.includes(selectedUseCase.toUpperCase());
     return matchesSearch && matchesType && matchesUseCase;
   });
 
@@ -161,14 +148,8 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
     currentPage * itemsPerPage,
   );
 
-  const typeOptions = ['All types', 'Marketplace', 'Internal', 'Third-party'];
-  const useCaseOptions = [
-    'All use cases',
-    'Productivity',
-    'Marketing',
-    'Development',
-    'Sales',
-  ];
+  const typeOptions = ["All types", "Marketplace", "Internal", "Third-party"];
+  const useCaseOptions = ["All use cases", "Productivity", "Marketing", "Development", "Sales"];
 
   return (
     <div className="text-foreground flex w-full flex-col items-center bg-transparent px-4 py-8">
@@ -191,30 +172,20 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
           <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
             <FilterButton
               label="All types"
-              selected={selectedType !== 'All types' ? selectedType : undefined}
-              active={activePopover === 'type'}
-              onClick={() =>
-                setActivePopover(activePopover === 'type' ? null : 'type')
-              }
+              selected={selectedType !== "All types" ? selectedType : undefined}
+              active={activePopover === "type"}
+              onClick={() => setActivePopover(activePopover === "type" ? null : "type")}
             />
             <FilterButton
               label="All use cases"
-              selected={
-                selectedUseCase !== 'All use cases'
-                  ? selectedUseCase
-                  : undefined
-              }
-              active={activePopover === 'useCase'}
-              onClick={() =>
-                setActivePopover(activePopover === 'useCase' ? null : 'useCase')
-              }
+              selected={selectedUseCase !== "All use cases" ? selectedUseCase : undefined}
+              active={activePopover === "useCase"}
+              onClick={() => setActivePopover(activePopover === "useCase" ? null : "useCase")}
             />
             <FilterButton
               label="More"
-              active={activePopover === 'more'}
-              onClick={() =>
-                setActivePopover(activePopover === 'more' ? null : 'more')
-              }
+              active={activePopover === "more"}
+              onClick={() => setActivePopover(activePopover === "more" ? null : "more")}
             />
           </div>
 
@@ -246,7 +217,7 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 className="absolute top-full right-5 left-5 z-50 w-auto overflow-hidden rounded-xl border border-zinc-200 bg-white p-1.5 shadow-2xl md:right-auto md:left-5 md:min-w-48 dark:border-white/10 dark:bg-[#171717]"
               >
-                {activePopover === 'type' &&
+                {activePopover === "type" &&
                   typeOptions.map((opt) => (
                     <button
                       key={opt}
@@ -259,14 +230,11 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
                     >
                       {opt}
                       {selectedType === opt && (
-                        <Check
-                          size={12}
-                          className="text-zinc-900 dark:text-white"
-                        />
+                        <Check size={12} className="text-zinc-900 dark:text-white" />
                       )}
                     </button>
                   ))}
-                {activePopover === 'useCase' &&
+                {activePopover === "useCase" &&
                   useCaseOptions.map((opt) => (
                     <button
                       key={opt}
@@ -279,14 +247,11 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
                     >
                       {opt}
                       {selectedUseCase === opt && (
-                        <Check
-                          size={12}
-                          className="text-zinc-900 dark:text-white"
-                        />
+                        <Check size={12} className="text-zinc-900 dark:text-white" />
                       )}
                     </button>
                   ))}
-                {activePopover === 'more' && (
+                {activePopover === "more" && (
                   <div className="space-y-1 p-2">
                     <p className="px-2 pb-2 text-[9px] font-bold tracking-wider text-zinc-400 uppercase dark:text-[#555]">
                       Advanced
@@ -319,11 +284,8 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
                 animate={{ opacity: 1 }}
                 className="space-y-3 py-24 text-center"
               >
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-zinc-100 bg-zinc-50 dark:border-white/10 dark:bg-white/5">
-                  <Search
-                    size={20}
-                    className="text-zinc-400 dark:text-[#555]"
-                  />
+                <div className="mx-auto 6 flex h-12 w-12 items-center justify-center rounded-full border border-zinc-100 bg-zinc-50 dark:border-white/10 dark:bg-white/5">
+                  <Search size={20} className="text-zinc-400 dark:text-[#555]" />
                 </div>
                 <p className="text-[14px] font-medium tracking-tight text-zinc-900 dark:text-white">
                   No integrations found
@@ -333,9 +295,9 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
                 </p>
                 <button
                   onClick={() => {
-                    setSearchQuery('');
-                    setSelectedType('All types');
-                    setSelectedUseCase('All use cases');
+                    setSearchQuery("");
+                    setSelectedType("All types");
+                    setSelectedUseCase("All use cases");
                   }}
                   className="text-[12px] font-bold text-zinc-900 hover:underline dark:text-white"
                 >
@@ -349,11 +311,9 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
         {/* Footer */}
         <footer className="flex flex-col items-center justify-between gap-4 border-t border-zinc-100 bg-zinc-50/30 px-6 py-4 text-[11px] text-zinc-400 sm:flex-row dark:border-[#1f1f1f] dark:bg-transparent dark:text-[#6b6b6b]">
           <span className="font-medium">
-            {filteredItems.length > 0
-              ? (currentPage - 1) * itemsPerPage + 1
-              : 0}{' '}
-            – {Math.min(currentPage * itemsPerPage, filteredItems.length)} of{' '}
-            {filteredItems.length} apps
+            {filteredItems.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} –{" "}
+            {Math.min(currentPage * itemsPerPage, filteredItems.length)} of {filteredItems.length}{" "}
+            apps
           </span>
 
           <div className="flex items-center gap-1">
@@ -386,10 +346,10 @@ export const IntegrationsCard: React.FC<IntegrationsCardProps> = ({
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
                     className={cn(
-                      'flex h-7 w-7 items-center justify-center rounded-lg text-[11px] font-bold transition-all',
+                      "flex h-7 w-7 items-center justify-center rounded-lg text-[11px] font-bold transition-all",
                       currentPage === pageNum
-                        ? 'border border-orange-200 bg-orange-50 text-orange-600 shadow-sm dark:border-[#3a1f14] dark:bg-[#2a160e] dark:text-[#f97316]'
-                        : 'text-zinc-500 hover:bg-zinc-100 dark:text-[#6b6b6b] dark:hover:bg-white/5',
+                        ? "border border-orange-200 bg-orange-50 text-orange-600 shadow-sm dark:border-[#3a1f14] dark:bg-[#2a160e] dark:text-[#f97316]"
+                        : "text-zinc-500 hover:bg-zinc-100 dark:text-[#6b6b6b] dark:hover:bg-white/5",
                     )}
                   >
                     {pageNum}

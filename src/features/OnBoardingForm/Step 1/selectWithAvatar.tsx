@@ -13,11 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 import { useNavigate, useSearch } from "@tanstack/react-router";
 
@@ -46,24 +42,24 @@ const statusClassNameByValue: Record<UserStatus, string> = {
   busy: "bg-rose-500",
 };
 
-const SelectWithAvatar = ({ data, param}: { data: UserOption[], param: string }) => {
+type SelectParamKey = "game" | "pokemon";
+type SearchParams = Partial<Record<SelectParamKey, string>>;
+
+const SelectWithAvatar = ({ data, param }: { data: UserOption[]; param: SelectParamKey }) => {
   const navigate = useNavigate();
-  const searchParams = useSearch({ strict: false });
+  const searchParams = useSearch({ strict: false }) as SearchParams;
 
   const id = useId();
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedUserName, setSelectedUserName] = useState<string | "">("");
+  const selectedUserName = searchParams[param] ?? "";
 
   const userByName: Record<string, UserOption> = Object.fromEntries(
     data.map((user) => [user.name, user]),
   );
 
-  const selectedUser = selectedUserName
-    ? userByName[selectedUserName]
-    : undefined;
+  const selectedUser = selectedUserName ? userByName[selectedUserName] : undefined;
 
-  const isUserName = (value: string) =>
-    data.some((user) => user.name === value);
+  const isUserName = (value: string) => data.some((user) => user.name === value);
 
   return (
     <div className="w-full space-y-2">
@@ -77,13 +73,8 @@ const SelectWithAvatar = ({ data, param}: { data: UserOption[], param: string })
           {selectedUser ? (
             <span className="flex min-w-0 items-center gap-2">
               <Avatar className="size-6">
-                <AvatarImage
-                  src={selectedUser.avatar}
-                  alt={selectedUser.name}
-                />
-                <AvatarFallback>
-                  {getInitials(selectedUser.name)}
-                </AvatarFallback>
+                <AvatarImage src={selectedUser.avatar} alt={selectedUser.name} />
+                <AvatarFallback>{getInitials(selectedUser.name)}</AvatarFallback>
               </Avatar>
               <span className="truncate font-medium">{selectedUser.name}</span>
             </span>
@@ -97,10 +88,7 @@ const SelectWithAvatar = ({ data, param}: { data: UserOption[], param: string })
         </PopoverTrigger>
         <PopoverContent className="w-75 overflow-hidden rounded-2xl border border-border/60 p-0 shadow-sm">
           <Command className="rounded-3xl!">
-            <CommandInput
-              placeholder="Search assignee..."
-              className="h-9 px-1"
-            />
+            <CommandInput placeholder="Search assignee..." className="h-9 px-1" />
             <CommandList>
               <CommandEmpty>No assignee found.</CommandEmpty>
               <CommandGroup>
@@ -110,16 +98,15 @@ const SelectWithAvatar = ({ data, param}: { data: UserOption[], param: string })
                     value={user.name}
                     data-checked={selectedUserName === user.name}
                     onSelect={(currentValue) => {
-                      console.log(user.name, selectedUserName, currentValue)
                       if (currentValue === selectedUserName) {
-                        navigate({
+                        void navigate({
                           to: ".",
                           search: (prev) => {
-                            const { [param]: _, ...rest } = prev;
+                            const rest = { ...(prev as SearchParams) };
+                            delete rest[param];
                             return rest;
                           },
                         });
-                        setSelectedUserName("");
                         setOpen(false);
                         return;
                       }
@@ -128,15 +115,13 @@ const SelectWithAvatar = ({ data, param}: { data: UserOption[], param: string })
                         return;
                       }
 
-                      navigate({
+                      void navigate({
                         to: ".",
                         search: {
                           ...searchParams,
                           [param]: currentValue,
                         },
                       });
-
-                      setSelectedUserName(currentValue);
                       setOpen(false);
                     }}
                     className="rounded-lg pr-2"
@@ -145,21 +130,15 @@ const SelectWithAvatar = ({ data, param}: { data: UserOption[], param: string })
                       <span className="relative shrink-0">
                         <Avatar className="size-7">
                           <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback>
-                            {getInitials(user.name)}
-                          </AvatarFallback>
+                          <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                         </Avatar>
                         <span
                           className={`absolute right-0 bottom-0 size-2 rounded-full ring-2 ring-background ${statusClassNameByValue[user.status]}`}
                         />
                       </span>
                       <span className="flex min-w-0 flex-col">
-                        <span className="truncate font-medium">
-                          {user.name}
-                        </span>
-                        <span className="text-muted-foreground truncate text-sm">
-                          {user.email}
-                        </span>
+                        <span className="truncate font-medium">{user.name}</span>
+                        <span className="text-muted-foreground truncate text-sm">{user.email}</span>
                       </span>
                     </span>
                   </CommandItem>

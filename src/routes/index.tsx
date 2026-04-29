@@ -1,3 +1,4 @@
+import DeploymentCardDemo from "#/components/ProfileCardResume";
 import CurrentHuntData from "#/features/CurrentHuntData/CurrentHuntData";
 import CurrentUserList from "#/features/CurrentUserList/CurrentUserList";
 import OnBoardingForm from "#/features/OnBoardingForm/OnBoardingForm";
@@ -14,6 +15,7 @@ function Home() {
       <OnBoardingForm />
       <CurrentUserList />
       <CurrentHuntData />
+      <DeploymentCardDemo />
     </div>
   );
 }

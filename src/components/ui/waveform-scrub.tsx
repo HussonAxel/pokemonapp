@@ -8,11 +8,7 @@ import {
   useTransform,
 } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  TbPlayerPauseFilled,
-  TbPlayerPlayFilled,
-  TbRotateClockwise2,
-} from "react-icons/tb";
+import { TbPlayerPauseFilled, TbPlayerPlayFilled, TbRotateClockwise2 } from "react-icons/tb";
 
 interface WaveformScrubProps {
   duration?: number;
@@ -21,9 +17,8 @@ interface WaveformScrubProps {
 }
 
 const DEFAULT_WAVEFORM = [
-  4, 7, 9, 6, 11, 14, 12, 8, 5, 10, 15, 13, 11, 9, 6, 10, 12, 9, 7, 5, 8, 12,
-  10, 7, 6, 9, 13, 11, 8, 6, 5, 11, 8, 6, 5, 11, 8, 6, 5, 8, 5, 10, 15, 13, 11,
-  9,
+  4, 7, 9, 6, 11, 14, 12, 8, 5, 10, 15, 13, 11, 9, 6, 10, 12, 9, 7, 5, 8, 12, 10, 7, 6, 9, 13, 11,
+  8, 6, 5, 11, 8, 6, 5, 11, 8, 6, 5, 8, 5, 10, 15, 13, 11, 9,
 ];
 
 export const WaveformScrub: React.FC<WaveformScrubProps> = ({
@@ -85,11 +80,7 @@ export const WaveformScrub: React.FC<WaveformScrubProps> = ({
     }
   });
 
-  const activeProgress = useTransform(
-    x,
-    [0, containerWidth || 1],
-    ["0%", "100%"]
-  );
+  const activeProgress = useTransform(x, [0, containerWidth || 1], ["0%", "100%"]);
   const displayTime = Math.round(duration - currentTime);
 
   const handleTogglePlay = () => {

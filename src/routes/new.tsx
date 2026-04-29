@@ -1,26 +1,19 @@
-import { pokemonGamesList, pokemonNames } from "#/features/OnBoardingForm/Step1/data";
+import { pokemonGamesList, pokemonNamesList } from "#/features/OnBoardingForm/Step 1/data/data";
 import { createFileRoute } from "@tanstack/react-router";
 import { fallback, zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
 
-  import OnBoardingForm from "#/features/OnBoardingForm/OnBoardingForm";
-  const searchSchema = z.object({
-    pokemonGame: fallback(
-      z.enum(pokemonGamesList).optional(),
-      "Maya Chen",
- 
-    ),
-    pokemonName: fallback(
-      z.enum([pokemonNames.name]).optional(),
-      "Maya Chen",    
-    )
-  });
+import OnBoardingForm from "#/features/OnBoardingForm/OnBoardingForm";
+const searchSchema = z.object({
+  game: fallback(z.enum(pokemonGamesList).optional(), "Fire Red"),
+  pokemon: fallback(z.enum(pokemonNamesList).optional(), "pikachu"),
+});
 
-  export const Route = createFileRoute("/new")({
-    component: RouteComponent,
-    validateSearch: zodValidator(searchSchema),
-  });
+export const Route = createFileRoute("/new")({
+  component: RouteComponent,
+  validateSearch: zodValidator(searchSchema),
+});
 
-  function RouteComponent() {
-    return <OnBoardingForm />;
-  }
+function RouteComponent() {
+  return <OnBoardingForm />;
+}
