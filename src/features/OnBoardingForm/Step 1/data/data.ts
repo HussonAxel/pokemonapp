@@ -1,4 +1,4 @@
-import type { UserOption } from "#/features/OnBoardingForm/Step 1/selectWithAvatar";
+import type { UserOption } from "#/features/OnBoardingForm/Step 1/components/selectWithAvatar";
 
 export const pokemonGames = [
   {
@@ -79,4 +79,4 @@ export const pokemonNames = [
 ] satisfies UserOption[];
 
 export const pokemonGamesList = ["Fire Red", "Ruby"] as const;
-export const pokemonNamesList = ["pikachu", "Charizard"] as const;
+export const pokemonNamesList = ["pikachu", "Charizard", "Beedrill"] as const;

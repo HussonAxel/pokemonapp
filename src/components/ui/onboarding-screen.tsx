@@ -1,10 +1,12 @@
 "use client";
 
+import { ProfileCard } from "#/components/ui/profile-card";
 import type { OnboardingPropsStep1 } from "#/features/OnBoardingForm/OnBoardingFormProps";
-import { OnBoardingFormStep1 } from "#/features/OnBoardingForm/Step 1/AccountsNamesLabels";
+import { OnBoardingFormStep1 } from "#/features/OnBoardingForm/Step 1";
 import { OnBoardingFormStep2 } from "#/features/OnBoardingForm/Step 2/SecondaryData";
 import HuntResumeCard from "#/features/OnBoardingForm/Step 3/HuntResumeCard";
-import { ChevronLeft, StarsIcon } from "lucide-react";
+
+import { ChevronLeft } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useState } from "react";
 
@@ -48,17 +50,11 @@ export const OnboardingScreen: React.FC<OnboardingPropsStep1> = ({
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={spring}
-        className="flex w-full max-w-sm flex-col overflow-hidden rounded-[32px] border bg-white p-2 shadow-xl transition-colors duration-500 md:max-w-[1140px] md:flex-row dark:bg-[#0A0A0A]"
+        className="flex w-full max-w-sm h-9/10 flex-col overflow-hidden rounded-[32px] border bg-white p-2 shadow-xl transition-colors duration-500 md:max-w-[1140px] md:flex-row dark:bg-[#0A0A0A]"
       >
         {/* Left Section */}
         <div className="flex flex-[1.2] flex-col justify-center rounded-[26px] border border-black/5 bg-[#FAFAFA] px-8 py-10 transition-colors duration-500 md:rounded-l-[26px] md:rounded-r-none md:border-r-0 md:px-16 dark:border-white/10 dark:bg-[#131313]">
-          <div className="mx-auto w-full max-w-sm overflow-y-scroll">
-            <div className="mb-8 flex justify-center md:justify-start">
-              <div className="rounded-xl bg-black/5 p-2 dark:bg-white/5">
-                <StarsIcon />
-              </div>
-            </div>
-
+          <div className="mx-auto w-full max-w-md overflow-y-scroll">
             <h1 className="mb-2 text-2xl font-semibold tracking-tight text-[#1A1A1A] transition-colors dark:text-[#d8d8d8]">
               {title}
             </h1>
@@ -120,21 +116,21 @@ export const OnboardingScreen: React.FC<OnboardingPropsStep1> = ({
         </div>
 
         {/* Right Section */}
-        <div className="relative hidden flex-1 flex-col items-center justify-center rounded-[26px] border border-black/5 bg-[#F4F4F4] p-12 transition-colors duration-500 md:flex md:rounded-l-none md:rounded-r-[26px] md:border-l-0 dark:border-white/5 dark:bg-[#1C1C1C]">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="z-10 -mb-5 rounded-2xl border border-[#E5E5E5] bg-white px-4 py-2 text-center text-xs font-medium whitespace-nowrap text-black shadow-lg transition-colors dark:border-[#2D2D2D] dark:bg-[#2B292E] dark:text-white"
-          >
-            <p>{tooltipMainText}</p>
-            <p className="text-[10px] font-normal whitespace-nowrap opacity-60">{tooltipSubText}</p>
-          </motion.div>
-
-          <img src="https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A%2F%2Fbulbapedia.bulbagarden.net%2Fwiki%2FPok%25C3%25A9mon_FireRed_and_LeafGreen_Versions&ved=0CBYQjRxqFwoTCMC6ufehhJQDFQAAAAAdAAAAABAF&opi=89978449" />
-
-          <p className="max-w-64 text-center text-xs leading-relaxed text-gray-500 transition-colors dark:text-gray-400">
-            {rightSectionDescription}
-          </p>
+        <div className="relative hidden flex-1 flex-col items-center rounded-[26px] border border-black/5 bg-[#F4F4F4] p-12 transition-colors duration-500 md:flex md:rounded-l-none md:rounded-r-[26px] md:border-l-0 dark:border-white/5 dark:bg-[#1C1C1C]">
+          <ProfileCard
+            name="Claude"
+            website="claude.ai"
+            visits="216M"
+            heatScore={98}
+            location="California, USA"
+            categories={["AI", "SaaS", "B2B"]}
+            employees="1001-5000"
+            arr="$3-4B"
+            founders={[
+              { name: "Dario Amodei", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dario" },
+            ]}
+            extraFounders={5}
+          />
         </div>
       </motion.div>
     </div>

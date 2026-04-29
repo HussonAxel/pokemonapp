@@ -45,7 +45,7 @@ const statusClassNameByValue: Record<UserStatus, string> = {
 type SelectParamKey = "game" | "pokemon";
 type SearchParams = Partial<Record<SelectParamKey, string>>;
 
-const SelectWithAvatar = ({ data, param }: { data: UserOption[]; param: SelectParamKey }) => {
+const SelectWithAvatar = ({ data, param, disabled }: { data: UserOption[]; param: SelectParamKey; disabled: boolean}) => {
   const navigate = useNavigate();
   const searchParams = useSearch({ strict: false }) as SearchParams;
 
@@ -68,7 +68,9 @@ const SelectWithAvatar = ({ data, param }: { data: UserOption[]; param: SelectPa
           id={id}
           role="combobox"
           aria-expanded={open}
-          className="flex h-10 w-full items-center justify-between rounded-3xl border border-border/60 bg-white dark:bg-black px-3.5 text-sm shadow-xs outline-none transition-colors hover:bg-accent/20 focus-visible:ring-[3px] focus-visible:ring-ring/50 "
+          className={`flex h-12 w-full items-center justify-between rounded-xl border border-border/60 bg-white dark:bg-black px-3.5 text-sm shadow-xs outline-none transition-colors hover:bg-accent/20 focus-visible:ring-[3px] focus-visible:ring-ring/50 ${disabled ? " opacity-60 cursor-not-allowed" : ""}`}
+     
+          disabled={disabled}
         >
           {selectedUser ? (
             <span className="flex min-w-0 items-center gap-2">
@@ -87,7 +89,7 @@ const SelectWithAvatar = ({ data, param }: { data: UserOption[]; param: SelectPa
           />
         </PopoverTrigger>
         <PopoverContent className="w-75 overflow-hidden rounded-2xl border border-border/60 p-0 shadow-sm">
-          <Command className="rounded-3xl!">
+          <Command className="rounded-xl!">
             <CommandInput placeholder="Search assignee..." className="h-9 px-1" />
             <CommandList>
               <CommandEmpty>No assignee found.</CommandEmpty>

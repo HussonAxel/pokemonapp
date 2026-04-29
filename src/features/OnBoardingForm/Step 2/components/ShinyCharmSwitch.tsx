@@ -9,7 +9,7 @@ const ShinyCharmSwitch = () => {
     <>
       <InputLabel LabelName={"test"} />
 
-      <div className="border-input has-data-[state=checked]:border-primary/50 has-data-[state=checked]:ring-4 has-data-[state=checked]:ring-primary/20  relative flex w-full items-start gap-2 rounded-md border p-4 outline-none">
+      <div className="border-input has-data-[state=checked]:border-primary/50 has-data-[state=checked]:ring-primary/20  relative flex w-full items-start gap-2 rounded-md border p-4 outline-none">
         <Switch
           id="email-updates"
           className="order-1 after:absolute after:inset-0 data-[size=default]:h-4 data-[size=default]:w-6 [&_span]:group-data-[size=default]/switch:size-3 data-[state=checked]:[&_span]:translate-x-2.5 data-[state=checked]:[&_span]:rtl:-translate-x-2.5"

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { cn } from '#/lib/utils';
+import { cn } from "#/lib/utils";
 import {
   AlertCircle,
   Box,
@@ -19,20 +19,20 @@ import {
   ShieldCheck,
   Terminal,
   X,
-} from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
-import React, { useEffect, useRef, useState } from 'react';
-import { BsCalendar4Week } from 'react-icons/bs';
-import { HiMiniCalendar } from 'react-icons/hi2';
-import { LuClock } from 'react-icons/lu';
-import { PiCheckBold, PiShareFatLight } from 'react-icons/pi';
-import { TbArrowUpRight, TbCircleDashed } from 'react-icons/tb';
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import React, { useEffect, useRef, useState } from "react";
+import { BsCalendar4Week } from "react-icons/bs";
+import { HiMiniCalendar } from "react-icons/hi2";
+import { LuClock } from "react-icons/lu";
+import { PiCheckBold, PiShareFatLight } from "react-icons/pi";
+import { TbArrowUpRight, TbCircleDashed } from "react-icons/tb";
 
 // --- Interfaces  ---
 export interface DeploymentStep {
   id: string;
   label: string;
-  status: 'success' | 'warning' | 'error' | 'loading' | 'pending';
+  status: "success" | "warning" | "error" | "loading" | "pending";
   progress: number;
   duration: string;
   metrics?: { files: number; functions: number; assets: number; size: string };
@@ -43,7 +43,7 @@ export interface DeploymentStep {
 export interface DeploymentData {
   id: string;
   environment: string;
-  status: 'Ready' | 'Building' | 'Error';
+  status: "Ready" | "Building" | "Error";
   createdTime: string;
   createdBy: { name: string; avatar: string };
   duration: string;
@@ -71,22 +71,19 @@ const SegmentedProgress = ({
     <div className="flex gap-0.5">
       {Array.from({ length: count }).map((_, i) => {
         const isActive = i < activeSegments;
-        let color = 'bg-neutral-200 dark:bg-[#1e1e1f]';
+        let color = "bg-neutral-200 dark:bg-[#1e1e1f]";
         if (isActive) {
           color =
-            status === 'error'
-              ? 'bg-red-500'
-              : status === 'warning'
-                ? 'bg-amber-500'
-                : 'bg-[#22c55e]';
+            status === "error"
+              ? "bg-red-500"
+              : status === "warning"
+                ? "bg-amber-500"
+                : "bg-[#22c55e]";
         }
         return (
           <div
             key={i}
-            className={cn(
-              'h-2.5 w-1 rounded-[1px] transition-colors duration-150',
-              color,
-            )}
+            className={cn("h-2.5 w-1 rounded-[1px] transition-colors duration-150", color)}
           />
         );
       })}
@@ -94,20 +91,12 @@ const SegmentedProgress = ({
   );
 };
 
-const MetricTag = ({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | number;
-}) => (
+const MetricTag = ({ label, value }: { label: string; value: string | number }) => (
   <div className="flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100 px-2 py-0.5 dark:border-[#2a2a2c] dark:bg-[#161617]">
     <span className="flex h-3.5 w-3.5 items-center justify-center rounded-[2px] border border-neutral-300 text-[9px] font-black text-neutral-400 uppercase dark:border-[#333] dark:text-[#555]">
       {label}
     </span>
-    <span className="text-[10px] font-bold text-neutral-600 dark:text-[#999]">
-      {value}
-    </span>
+    <span className="text-[10px] font-bold text-neutral-600 dark:text-[#999]">{value}</span>
   </div>
 );
 
@@ -118,17 +107,13 @@ const formatDuration = (seconds: number) => {
   return `${m}m ${s}s`;
 };
 
-export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
-  data: initialData,
-}) => {
+export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({ data: initialData }) => {
   const [data, setData] = useState(initialData);
   const [isCopied, setIsCopied] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [activePopover, setActivePopover] = useState<
-    'more' | 'terminal' | 'search' | null
-  >(null);
+  const [activePopover, setActivePopover] = useState<"more" | "terminal" | "search" | null>(null);
   const [isInvestigating, setIsInvestigating] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const moreRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -136,11 +121,9 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const isOutsideMore =
-        moreRef.current && !moreRef.current.contains(event.target as Node);
+      const isOutsideMore = moreRef.current && !moreRef.current.contains(event.target as Node);
       const isOutsideTerminal =
-        terminalRef.current &&
-        !terminalRef.current.contains(event.target as Node);
+        terminalRef.current && !terminalRef.current.contains(event.target as Node);
       const isOutsideSearch =
         searchRef.current && !searchRef.current.contains(event.target as Node);
 
@@ -148,12 +131,12 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
         setActivePopover(null);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
-    if (data.status !== 'Building') return;
+    if (data.status !== "Building") return;
 
     const interval = setInterval(() => {
       setElapsedSeconds((prev) => prev + 1);
@@ -161,31 +144,28 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
       setData((prevData) => {
         const newSteps = [...prevData.steps];
         const activeStepIndex = newSteps.findIndex(
-          (s) =>
-            s.status === 'loading' || (s.status === 'pending' && !s.metrics),
+          (s) => s.status === "loading" || (s.status === "pending" && !s.metrics),
         );
 
         if (activeStepIndex !== -1) {
           const step = { ...newSteps[activeStepIndex] };
           if (step.progress < 1) {
-            step.status = 'loading';
+            step.status = "loading";
             step.progress += 0.05;
             step.duration = `${Math.floor(step.progress * 10)}s`;
           } else {
             step.progress = 1;
-            step.status = 'success';
+            step.status = "success";
           }
           newSteps[activeStepIndex] = step;
 
-          const allDone = newSteps.every(
-            (s) => s.status === 'success' || s.metrics,
-          );
+          const allDone = newSteps.every((s) => s.status === "success" || s.metrics);
 
           return {
             ...prevData,
             steps: newSteps,
             duration: formatDuration(elapsedSeconds),
-            status: allDone ? 'Ready' : 'Building',
+            status: allDone ? "Ready" : "Building",
           };
         }
         return prevData;
@@ -202,7 +182,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
   };
 
   const handleVisit = () => {
-    window.open(`https://${data.domains[0]}`, '_blank');
+    window.open(`https://${data.domains[0]}`, "_blank");
   };
 
   const resetSimulation = () => {
@@ -218,7 +198,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
         ...prev,
         steps: prev.steps.map((s) => ({
           ...s,
-          status: s.status === 'error' ? 'success' : s.status,
+          status: s.status === "error" ? "success" : s.status,
         })),
       }));
     }, 3000);
@@ -274,7 +254,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                 ) : (
                   <PiShareFatLight size={16} />
                 )}
-                {isCopied ? 'Copied' : 'Share'}
+                {isCopied ? "Copied" : "Share"}
               </button>
               <button
                 onClick={handleVisit}
@@ -296,10 +276,8 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
               <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black/60 to-transparent p-4 sm:justify-center sm:from-transparent">
                 <div
                   className={cn(
-                    'mb-1 h-1 w-8 rounded-full transition-colors duration-500',
-                    data.status === 'Ready'
-                      ? 'bg-[#22c55e]'
-                      : 'animate-pulse bg-amber-500',
+                    "mb-1 h-1 w-8 rounded-full transition-colors duration-500",
+                    data.status === "Ready" ? "bg-[#22c55e]" : "animate-pulse bg-amber-500",
                   )}
                 />
                 <div className="text-sm leading-tight font-bold text-white">
@@ -324,16 +302,16 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
               <div className="ml-2 flex items-center gap-2">
                 <span
                   className={cn(
-                    'flex items-center gap-2 rounded-full border px-2 py-0.5 font-bold transition-colors duration-300',
-                    data.status === 'Ready'
-                      ? 'border-[#16A821]/30 bg-green-50 text-[#16A821] dark:bg-[#162C19]'
-                      : 'border-amber-500/30 bg-amber-50 text-amber-500 dark:bg-[#2C1F16]',
+                    "flex items-center gap-2 rounded-full border px-2 py-0.5 font-bold transition-colors duration-300",
+                    data.status === "Ready"
+                      ? "border-[#16A821]/30 bg-green-50 text-[#16A821] dark:bg-[#162C19]"
+                      : "border-amber-500/30 bg-amber-50 text-amber-500 dark:bg-[#2C1F16]",
                   )}
                 >
                   <div
                     className={cn(
-                      'h-1.5 w-1.5 animate-pulse rounded-full',
-                      data.status === 'Ready' ? 'bg-[#16A821]' : 'bg-amber-500',
+                      "h-1.5 w-1.5 animate-pulse rounded-full",
+                      data.status === "Ready" ? "bg-[#16A821]" : "bg-amber-500",
                     )}
                   />
                   {data.status}
@@ -375,21 +353,16 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                 </span>
                 <div
                   className="flex cursor-pointer items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-neutral-600 transition-colors hover:bg-neutral-100 active:scale-95 dark:border-[#2a2a2c] dark:bg-[#161617] dark:text-[#999] dark:hover:bg-[#1f1f20]"
-                  onClick={() =>
-                    window.open(`https://${data.domains[0]}`, '_blank')
-                  }
+                  onClick={() => window.open(`https://${data.domains[0]}`, "_blank")}
                 >
-                  <Globe size={12} /> {data.domains[0]}{' '}
+                  <Globe size={12} /> {data.domains[0]}{" "}
                   <span className="text-neutral-300 dark:text-[#444]">+33</span>
                 </div>
                 <div className="hidden rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-mono text-neutral-400 sm:block dark:border-[#2a2a2c] dark:bg-[#161617] dark:text-[#444]">
                   main-as..8z
                 </div>
               </div>
-              <CheckCircle2
-                size={16}
-                className="mt-1 shrink-0 text-[#22c55e] sm:mt-0"
-              />
+              <CheckCircle2 size={16} className="mt-1 shrink-0 text-[#22c55e] sm:mt-0" />
             </div>
 
             <div className="flex items-start justify-between gap-2 sm:items-center">
@@ -407,15 +380,10 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                   <span className="flex items-center gap-1">
                     <Box size={14} /> 90
                   </span>
-                  <span className="cursor-help font-black tracking-tighter">
-                    ...
-                  </span>
+                  <span className="cursor-help font-black tracking-tighter">...</span>
                 </div>
               </div>
-              <CheckCircle2
-                size={16}
-                className="mt-1 shrink-0 text-[#22c55e] sm:mt-0"
-              />
+              <CheckCircle2 size={16} className="mt-1 shrink-0 text-[#22c55e] sm:mt-0" />
             </div>
           </div>
 
@@ -432,10 +400,10 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                 <div className="flex w-full items-center justify-between sm:w-auto">
                   <span
                     className={cn(
-                      'w-auto shrink-0 text-[12px] font-medium transition-colors sm:w-32',
-                      step.status === 'loading'
-                        ? 'text-neutral-900 dark:text-white'
-                        : 'text-neutral-500 dark:text-[#999]',
+                      "w-auto shrink-0 text-[12px] font-medium transition-colors sm:w-32",
+                      step.status === "loading"
+                        ? "text-neutral-900 dark:text-white"
+                        : "text-neutral-500 dark:text-[#999]",
                     )}
                   >
                     {step.label}
@@ -447,11 +415,11 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                     <CheckCircle2
                       size={16}
                       className={cn(
-                        step.status === 'error'
-                          ? 'text-red-500'
-                          : step.status === 'success'
-                            ? 'text-[#22c55e]'
-                            : 'text-neutral-300 dark:text-neutral-700',
+                        step.status === "error"
+                          ? "text-red-500"
+                          : step.status === "success"
+                            ? "text-[#22c55e]"
+                            : "text-neutral-300 dark:text-neutral-700",
                       )}
                     />
                   </div>
@@ -465,16 +433,13 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                     </div>
                   ) : (
                     <div className="flex w-full items-center gap-3 sm:w-auto">
-                      <SegmentedProgress
-                        progress={step.progress}
-                        status={step.status}
-                      />
-                      {step.id === 'build' && (
+                      <SegmentedProgress progress={step.progress} status={step.status} />
+                      {step.id === "build" && (
                         <button
                           onClick={() => handleRunSummary()}
                           className="ml-auto flex items-center gap-1 rounded-md border border-neutral-300 px-2 py-0.5 text-[9px] font-bold text-neutral-400 transition-colors hover:bg-white active:scale-95 sm:ml-0 dark:border-[#2a2a2c] dark:text-[#555] dark:hover:bg-black"
                         >
-                          <Play size={8} fill="currentColor" />{' '}
+                          <Play size={8} fill="currentColor" />{" "}
                           <span className="xs:inline hidden">RUN SUMMARY</span>
                         </button>
                       )}
@@ -489,13 +454,13 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                   <CheckCircle2
                     size={16}
                     className={cn(
-                      step.status === 'error'
-                        ? 'text-red-500'
-                        : step.status === 'success'
-                          ? 'text-[#22c55e]'
-                          : step.status === 'loading'
-                            ? 'animate-pulse text-amber-500'
-                            : 'text-neutral-300 dark:text-[#333]',
+                      step.status === "error"
+                        ? "text-red-500"
+                        : step.status === "success"
+                          ? "text-[#22c55e]"
+                          : step.status === "loading"
+                            ? "animate-pulse text-amber-500"
+                            : "text-neutral-300 dark:text-[#333]",
                     )}
                   />
                 </div>
@@ -510,69 +475,47 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
             <MoreVertical
               size={16}
               className={cn(
-                'cursor-pointer transition-colors hover:text-neutral-900 active:scale-90 dark:hover:text-white',
-                activePopover === 'more' ? 'text-[#FA692E]' : '',
+                "cursor-pointer transition-colors hover:text-neutral-900 active:scale-90 dark:hover:text-white",
+                activePopover === "more" ? "text-[#FA692E]" : "",
               )}
-              onClick={() =>
-                setActivePopover(activePopover === 'more' ? null : 'more')
-              }
+              onClick={() => setActivePopover(activePopover === "more" ? null : "more")}
             />
             <Terminal
               size={15}
               className={cn(
-                'cursor-pointer transition-colors hover:text-neutral-900 active:scale-90 dark:hover:text-white',
-                activePopover === 'terminal' ? 'text-[#FA692E]' : '',
+                "cursor-pointer transition-colors hover:text-neutral-900 active:scale-90 dark:hover:text-white",
+                activePopover === "terminal" ? "text-[#FA692E]" : "",
               )}
-              onClick={() =>
-                setActivePopover(
-                  activePopover === 'terminal' ? null : 'terminal',
-                )
-              }
+              onClick={() => setActivePopover(activePopover === "terminal" ? null : "terminal")}
             />
             <Search
               size={15}
               className={cn(
-                'cursor-pointer transition-colors hover:text-neutral-900 active:scale-90 dark:hover:text-white',
-                activePopover === 'search' ? 'text-[#FA692E]' : '',
+                "cursor-pointer transition-colors hover:text-neutral-900 active:scale-90 dark:hover:text-white",
+                activePopover === "search" ? "text-[#FA692E]" : "",
               )}
-              onClick={() =>
-                setActivePopover(activePopover === 'search' ? null : 'search')
-              }
+              onClick={() => setActivePopover(activePopover === "search" ? null : "search")}
             />
           </div>
 
           <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:gap-5">
-            {data.steps.some(
-              (s) => s.status === 'error' || s.status === 'warning',
-            ) && (
+            {data.steps.some((s) => s.status === "error" || s.status === "warning") && (
               <div className="flex items-center gap-1 text-center text-[9px] font-bold tracking-widest uppercase sm:text-left">
-                <span className="text-red-500 underline decoration-red-500/30">
-                  1
-                </span>{' '}
-                <span className="font-medium text-neutral-400 dark:text-white/40">
-                  Error,{' '}
-                </span>
-                <span className="text-amber-500 underline decoration-amber-500/30">
-                  {' '}
-                  3
-                </span>{' '}
+                <span className="text-red-500 underline decoration-red-500/30">1</span>{" "}
+                <span className="font-medium text-neutral-400 dark:text-white/40">Error, </span>
+                <span className="text-amber-500 underline decoration-amber-500/30"> 3</span>{" "}
                 <span className="font-medium text-neutral-400 dark:text-white/40">
                   Warnings detected
                 </span>
-                <AlertCircle
-                  size={10}
-                  className="ml-1 animate-pulse text-red-500"
-                />
+                <AlertCircle size={10} className="ml-1 animate-pulse text-red-500" />
               </div>
             )}
             <button
               onClick={handleInvestigate}
               disabled={isInvestigating}
               className={cn(
-                'relative w-full overflow-hidden rounded-full border border-neutral-200 px-5 py-2 text-[11px] font-bold text-neutral-900 transition-all active:scale-95 disabled:opacity-70 sm:w-auto dark:border-[#222] dark:text-neutral-100',
-                isInvestigating
-                  ? 'bg-neutral-100 dark:bg-[#1A1A1B]'
-                  : 'bg-white dark:bg-[#121213]',
+                "relative w-full overflow-hidden rounded-full border border-neutral-200 px-5 py-2 text-[11px] font-bold text-neutral-900 transition-all active:scale-95 disabled:opacity-70 sm:w-auto dark:border-[#222] dark:text-neutral-100",
+                isInvestigating ? "bg-neutral-100 dark:bg-[#1A1A1B]" : "bg-white dark:bg-[#121213]",
               )}
             >
               <AnimatePresence mode="wait">
@@ -599,9 +542,9 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
               </AnimatePresence>
               {isInvestigating && (
                 <motion.div
-                  initial={{ x: '-100%' }}
-                  animate={{ x: '100%' }}
-                  transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                  initial={{ x: "-100%" }}
+                  animate={{ x: "100%" }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                   className="bg-primary/5 absolute inset-0"
                 />
               )}
@@ -610,7 +553,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
 
           {/* Global Popover Container (Mobile-Optimized) */}
           <AnimatePresence>
-            {activePopover === 'more' && (
+            {activePopover === "more" && (
               <motion.div
                 ref={moreRef}
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -621,28 +564,28 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                 {[
                   {
                     icon: Copy,
-                    label: 'Copy Deployment ID',
+                    label: "Copy Deployment ID",
                     action: () => {
                       /* no-op */
                     },
                   },
                   {
                     icon: History,
-                    label: 'View History',
+                    label: "View History",
                     action: () => {
                       /* no-op */
                     },
                   },
                   {
                     icon: ShieldCheck,
-                    label: 'Security Audit',
+                    label: "Security Audit",
                     action: () => {
                       /* no-op */
                     },
                   },
                   {
                     icon: Settings,
-                    label: 'Configure',
+                    label: "Configure",
                     action: () => {
                       /* no-op */
                     },
@@ -662,7 +605,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
               </motion.div>
             )}
 
-            {activePopover === 'terminal' && (
+            {activePopover === "terminal" && (
               <motion.div
                 ref={terminalRef}
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -672,11 +615,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
               >
                 <div className="flex items-center justify-between border-b border-neutral-100 bg-neutral-50/50 px-3 py-2 dark:border-white/5 dark:bg-white/5">
                   <span className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
-                    <Play
-                      size={10}
-                      className="fill-[#FA692E]/10 text-[#FA692E]"
-                    />{' '}
-                    Live Build Logs
+                    <Play size={10} className="fill-[#FA692E]/10 text-[#FA692E]" /> Live Build Logs
                   </span>
                   <div className="flex gap-1.5">
                     <div className="h-1.5 w-1.5 rounded-full bg-neutral-200 dark:bg-neutral-800" />
@@ -686,8 +625,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                 </div>
                 <div className="no-scrollbar h-44 space-y-2 overflow-y-auto p-3 font-mono text-[10px]">
                   <p className="text-neutral-400 dark:text-neutral-600">
-                    [{new Date().toLocaleTimeString()}] Fetching deployment
-                    metadata...
+                    [{new Date().toLocaleTimeString()}] Fetching deployment metadata...
                   </p>
                   <p className="font-medium text-[#16A821] dark:text-green-400">
                     ✔ Repository initialized
@@ -707,14 +645,12 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                   <p className="font-medium text-[#16A821] dark:text-green-400">
                     ✔ Static components pre-rendered
                   </p>
-                  <p className="font-bold text-[#FA692E]">
-                    Ready for deployment at axiom.xyz
-                  </p>
+                  <p className="font-bold text-[#FA692E]">Ready for deployment at axiom.xyz</p>
                 </div>
               </motion.div>
             )}
 
-            {activePopover === 'search' && (
+            {activePopover === "search" && (
               <motion.div
                 ref={searchRef}
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -732,7 +668,7 @@ export const DeploymentCard: React.FC<{ data: DeploymentData }> = ({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="flex-1 border-none bg-transparent pr-4 text-[11px] text-neutral-900 outline-none placeholder:text-neutral-400 dark:text-white"
-                  onKeyDown={(e) => e.key === 'Enter' && setActivePopover(null)}
+                  onKeyDown={(e) => e.key === "Enter" && setActivePopover(null)}
                 />
               </motion.div>
             )}
