@@ -46,7 +46,7 @@ const statusClassNameByValue: Record<UserStatus, string> = {
   busy: "bg-rose-500",
 };
 
-const SelectWithAvatar = ({ data }: { data: UserOption[] }) => {
+const SelectWithAvatar = ({ data, param}: { data: UserOption[], param: string }) => {
   const navigate = useNavigate();
   const searchParams = useSearch({ strict: false });
 
@@ -110,11 +110,12 @@ const SelectWithAvatar = ({ data }: { data: UserOption[] }) => {
                     value={user.name}
                     data-checked={selectedUserName === user.name}
                     onSelect={(currentValue) => {
+                      console.log(user.name, selectedUserName, currentValue)
                       if (currentValue === selectedUserName) {
                         navigate({
                           to: ".",
                           search: (prev) => {
-                            const { pokemonGame, ...rest } = prev;
+                            const { [param]: _, ...rest } = prev;
                             return rest;
                           },
                         });
@@ -131,7 +132,7 @@ const SelectWithAvatar = ({ data }: { data: UserOption[] }) => {
                         to: ".",
                         search: {
                           ...searchParams,
-                          pokemonGame: currentValue,
+                          [param]: currentValue,
                         },
                       });
 
