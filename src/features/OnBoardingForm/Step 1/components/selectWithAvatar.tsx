@@ -45,7 +45,15 @@ const statusClassNameByValue: Record<UserStatus, string> = {
 type SelectParamKey = "game" | "pokemon";
 type SearchParams = Partial<Record<SelectParamKey, string>>;
 
-const SelectWithAvatar = ({ data, param, disabled }: { data: UserOption[]; param: SelectParamKey; disabled: boolean}) => {
+const SelectWithAvatar = ({
+  data,
+  param,
+  disabled,
+}: {
+  data: UserOption[];
+  param: SelectParamKey;
+  disabled: boolean;
+}) => {
   const navigate = useNavigate();
   const searchParams = useSearch({ strict: false }) as SearchParams;
 
@@ -69,7 +77,6 @@ const SelectWithAvatar = ({ data, param, disabled }: { data: UserOption[]; param
           role="combobox"
           aria-expanded={open}
           className={`flex h-12 w-full items-center justify-between rounded-xl border border-border/60 bg-white dark:bg-black px-3.5 text-sm shadow-xs outline-none transition-colors hover:bg-accent/20 focus-visible:ring-[3px] focus-visible:ring-ring/50 ${disabled ? " opacity-60 cursor-not-allowed" : ""}`}
-     
           disabled={disabled}
         >
           {selectedUser ? (

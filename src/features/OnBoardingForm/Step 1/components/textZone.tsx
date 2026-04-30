@@ -11,7 +11,7 @@ const TextZone = () => {
       <Label htmlFor={id}>Add notes</Label>
       <Textarea
         id={id}
-        placeholder="[Pokemon] can kill himself.., "
+        placeholder="Add custom notes to your hunt"
         className="focus-visible:ring-primary/20 focus-visible:border-primary/50 [resize:none]"
       />
     </div>

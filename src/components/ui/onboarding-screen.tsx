@@ -12,16 +12,12 @@ import React, { useState } from "react";
 
 export const OnboardingScreen: React.FC<OnboardingPropsStep1> = ({
   title = "Business Details",
-  subtitle = "Tell us about your brand to start creating campaigns.",
   businessNameLabel = "Business name",
   businessNamePlaceholder = "Enter your name",
   legalNameLabel = "Business Legal name",
   legalNamePlaceholder = "Enter your business legal name",
   nextButtonText = "Create business account",
   finishButtonText = "Finish Setup",
-  tooltipMainText = "Click here to add your profile image.",
-  tooltipSubText = "You can always do this later.",
-  rightSectionDescription = "With your creator profile ready, it's time to set up your business account.",
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -58,9 +54,6 @@ export const OnboardingScreen: React.FC<OnboardingPropsStep1> = ({
             <h1 className="mb-2 text-2xl font-semibold tracking-tight text-[#1A1A1A] transition-colors dark:text-[#d8d8d8]">
               {title}
             </h1>
-            <p className="mb-8 text-sm text-gray-500 transition-colors dark:text-gray-400">
-              {subtitle}
-            </p>
 
             {/* Stepper */}
             <div className="mb-6 flex gap-2">
@@ -127,7 +120,10 @@ export const OnboardingScreen: React.FC<OnboardingPropsStep1> = ({
             employees="1001-5000"
             arr="$3-4B"
             founders={[
-              { name: "Dario Amodei", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dario" },
+              {
+                name: "Dario Amodei",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dario",
+              },
             ]}
             extraFounders={5}
           />

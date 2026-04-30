@@ -7,10 +7,10 @@ import {
   NumberFieldInput,
 } from "@/components/ui/number-field";
 
-export default function Input() {
+export default function Input({ LabelName }) {
   return (
     <>
-      <InputLabel LabelName={"LabelName"} />
+      <InputLabel LabelName={LabelName} />
       <NumberField defaultValue={1}>
         <NumberFieldGroup>
           <NumberFieldDecrement />

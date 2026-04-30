@@ -17,7 +17,8 @@ export const OnBoardingFormStep1: React.FC<OnboardingPropsStep1> = () => {
 
       <div className="space-y-2">
         <label className="flex items-center gap-2 text-xs font-semibold tracking-wider whitespace-nowrap text-[#808080] uppercase transition-colors dark:text-[#6C6C6C]">
-          Pokémon Name<Info size={14} className="opacity-50" />
+          Pokémon Name
+          <Info size={14} className="opacity-50" />
         </label>
         <SelectWithAvatar data={pokemonNames} param={"pokemon"} disabled={false} />
       </div>
@@ -35,9 +36,8 @@ export const OnBoardingFormStep1: React.FC<OnboardingPropsStep1> = () => {
       </div>
 
       <div className="space-y-2">
-      <TextZone />
+        <TextZone />
       </div>
-      
     </div>
   );
 };

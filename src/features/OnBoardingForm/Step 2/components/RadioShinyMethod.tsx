@@ -4,7 +4,7 @@ import { FaDesktop, FaLaptop, FaLayerGroup, FaMobileAlt, FaTabletAlt } from "rea
 import { RadioGroup, RadioGroupItem } from "#/components/ui/radio-group";
 import InputLabel from "../../../../components/InputLabel";
 
-const RadioShinyMethod = () => {
+const RadioShinyMethod = ({ LabelName }) => {
   const id = useId();
 
   const items = [
@@ -17,7 +17,7 @@ const RadioShinyMethod = () => {
 
   return (
     <fieldset className="w-full max-w-96 space-y-4">
-      <InputLabel LabelName={"test"} />
+      <InputLabel LabelName={LabelName} />
 
       <RadioGroup className="grid grid-cols-3 gap-2" defaultValue="1">
         {items.map((item) => {
